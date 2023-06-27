@@ -1,2 +1,2 @@
-# bartapp
-App to keep track of feeding Bart (our cat).
+# Bart App
+App to keep track of feeding Bart (family's cat).
