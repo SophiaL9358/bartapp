@@ -28,8 +28,8 @@ Bart Info > General > date: month day, year
 */
 
 /* CONSTANTS */
-const not_fed_info = "He is not fed :(";
-const fed_info = "He is fed!!!";
+let not_fed_info = "He is not fed :(";
+let fed_info = "He is fed!!!";
 
 let refresh_btn = document.getElementById("refresh_btn");
 let refresh_text = document.getElementById("refresh_text");
@@ -103,7 +103,8 @@ async function isUnsynched(){
   let mor_info = (await getDoc(doc(db, "Bart Info", "Morning"))).data();
   let aft_info = (await getDoc(doc(db, "Bart Info", "Afternoon"))).data();
 
-  return (mor_btn.innerHTML == not_fed_info && mor_info.fed) ||(mor_btn.innerHTML == fed_info && !mor_info.fed) || (aft_btn.innerHTML == not_fed_info && aft_info.fed) ||(aft_btn.innerHTML == fed_info && !aft_info.fed);
+  return (mor_btn.classList.contains("btn-danger") && mor_info.fed) ||(mor_btn.classList.contains("btn-success") && !mor_info.fed) 
+  || (aft_btn.classList.contains("btn-danger") && aft_info.fed) ||(aft_btn.classList.contains("btn-success") && !aft_info.fed);
 }
 
 // General button press
@@ -140,10 +141,12 @@ async function resetFirestore(){
     return; // do nothing
   } else { // firestore date is wrong (so everything needs to be reset)
     await updateDoc(doc(db, "Bart Info", "Morning"), {
-      fed: false
+      fed: false, 
+      who: ""
     });
     await updateDoc(doc(db, "Bart Info", "Afternoon"), {
-      fed: false
+      fed: false,
+      who: ""
     });
     await updateDoc(doc(db, "Bart Info", "General"), {
       date: date_text.innerHTML
@@ -198,9 +201,7 @@ if (date_text.innerHTML != date_info.date){
   resetFirestore();
 }
 // get user name
-if (localStorage.getItem(localStorage_key) != null){ // If a name is already stored
-  console.log("hel");
-} else { // If first time
+if (localStorage.getItem(localStorage_key) == null){ // If first time
   let temp_name = window.prompt("Please enter your name!\nIf no name is entered, your name will be set to \"User\".", "");
   if (temp_name == "" || temp_name == null){ // If cancelled prompt
     localStorage.setItem(localStorage_key, 'User');
