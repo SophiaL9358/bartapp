@@ -96,7 +96,7 @@ async function btnPressed(btn, btn_info, doc_name){
     resetFirestore();
   } else if (await isUnsynched()){
     // If someone changed status while on the site
-    alert("A change was already made to Bart's feeding status while you were on the site. Showing changes...");
+    alert("A change was already made to Bart's feeding status while you were on the site. Showing changes...\nYOUR CLICK JUST NOW HAS NO EFFECT EXCEPT REFRESHING THE PAGE");
   } else {
     // Changing firestore
     await updateDoc(doc(db, "Bart Info", doc_name), {
