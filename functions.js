@@ -34,6 +34,8 @@ const fed_info = "He is fed!!!";
 let refresh_btn = document.getElementById("refresh_btn");
 let refresh_text = document.getElementById("refresh_text");
 
+let edit_name_btn = document.getElementById("edit_name_btn");
+
 let mor_btn = document.getElementById("mor_fed_btn");
 let mor_text = document.getElementById("mor_text");
 
@@ -41,7 +43,11 @@ let aft_btn = document.getElementById("aft_fed_btn");
 let aft_text = document.getElementById("aft_text");
 
 let date_text = document.getElementById("date");
+let user_text = document.getElementById("user_name");
 
+let localStorage_key = 'user_name';
+
+// Handle button clicks
 refresh_btn.addEventListener("click", async () => {
   getInfo();
   setDateText();
@@ -49,6 +55,13 @@ refresh_btn.addEventListener("click", async () => {
   if (date_text.innerHTML != date_info.date){
     resetFirestore();
   }
+});
+edit_name_btn.addEventListener("click", () => {
+  let temp_name = window.prompt("Please enter your name!\nIf no name is entered, your name will stay the same.", "");
+  if (!(temp_name == "" || temp_name == null)){ // If cancelled prompt
+    localStorage.setItem(localStorage_key, temp_name);
+  }
+  user_text.innerHTML = localStorage.getItem(localStorage_key);
 });
 mor_btn.addEventListener("click", morBtnPressed);
 aft_btn.addEventListener("click", aftBtnPressed);
@@ -141,10 +154,15 @@ async function resetFirestore(){
 }
 
 async function getInfo(){
+  // SPINNER BUTTON!!
   refresh_btn.classList.add("disabled");
   refresh_text.innerHTML = "";
   refresh_text.classList.add("spinner-border", "spinner-border-sm");
 
+  // Set user's name
+  user_text.innerHTML = localStorage.getItem(localStorage_key);
+
+  // Set mor/aft buttons
   let mor_info = (await getDoc(doc(db, "Bart Info", "Morning"))).data();
   let aft_info = (await getDoc(doc(db, "Bart Info", "Afternoon"))).data();
 
@@ -162,6 +180,8 @@ async function getInfo(){
     changeNotFed(aft_btn, aft_text);
   }
 
+
+  // UNSPIN THE BUTTON
   refresh_btn.classList.remove("disabled");
   refresh_text.innerHTML = "Refresh Info";
   refresh_text.classList.remove("spinner-border", "spinner-border-sm");
@@ -171,11 +191,22 @@ async function getInfo(){
 
 
 /* RUN WHEN INIT */
-// When user enters, run:
-getInfo();
 // Check if day changed:
 setDateText();
 let date_info = (await getDoc(doc(db, "Bart Info", "General"))).data();
 if (date_text.innerHTML != date_info.date){
   resetFirestore();
 }
+// get user name
+if (localStorage.getItem(localStorage_key) != null){ // If a name is already stored
+  console.log("hel");
+} else { // If first time
+  let temp_name = window.prompt("Please enter your name!\nIf no name is entered, your name will be set to \"User\".", "");
+  if (temp_name == "" || temp_name == null){ // If cancelled prompt
+    localStorage.setItem(localStorage_key, 'User');
+  } else {
+    localStorage.setItem(localStorage_key, temp_name);
+  }
+}
+// When user enters, run:
+getInfo();
