@@ -31,10 +31,18 @@ Bart Info > General > date: month day, year
 const not_fed_info = "He is not fed :(";
 const fed_info = "He is fed!!!";
 
+let refresh_btn = document.getElementById("refresh_btn");
+let refresh_text = document.getElementById("refresh_text");
+
 let mor_btn = document.getElementById("mor_fed_btn");
+let mor_text = document.getElementById("mor_text");
+
 let aft_btn = document.getElementById("aft_fed_btn");
+let aft_text = document.getElementById("aft_text");
+
 let date_text = document.getElementById("date");
 
+refresh_btn.addEventListener("click", getInfo);
 mor_btn.addEventListener("click", morBtnPressed);
 aft_btn.addEventListener("click", aftBtnPressed);
 
@@ -50,13 +58,13 @@ if (date_text.innerHTML != date_info.date){
 
 /* FUNCTIONS */
 // Set button to not fed
-function changeNotFed(btn){
-  btn.innerHTML = not_fed_info;
+function changeNotFed(btn, btn_text){
+  btn_text.innerHTML = not_fed_info;
   btn.classList.remove("btn-success");
   btn.classList.add("btn-danger");
 }
-function changeFed(btn){
-  btn.innerHTML = fed_info;
+function changeFed(btn, btn_text){
+  btn_text.innerHTML = fed_info;
   btn.classList.remove("btn-danger");
   btn.classList.add("btn-success");
 }
@@ -69,13 +77,13 @@ function debug(){
 // Morning button
 async function morBtnPressed(){
   let mor_info = (await getDoc(doc(db, "Bart Info", "Morning"))).data();
-  btnPressed(mor_btn, mor_info, "Morning");
+  btnPressed(mor_btn, mor_info,mor_text, "Morning");
 }
 
 // Afternoon button
 async function aftBtnPressed(){
   let aft_info = (await getDoc(doc(db, "Bart Info", "Afternoon"))).data();
-  btnPressed(aft_btn, aft_info, "Afternoon");
+  btnPressed(aft_btn, aft_info, aft_text, "Afternoon");
 }
 
 async function isUnsynched(){
@@ -86,7 +94,9 @@ async function isUnsynched(){
 }
 
 // General button press
-async function btnPressed(btn, btn_info, doc_name){
+async function btnPressed(btn, btn_info, btn_text, doc_name){
+  btn_text.innerHTML = "";
+  btn_text.classList.add("spinner-border", "spinner-border-sm");
   
   // check if date has changed
   setDateText();
@@ -104,6 +114,7 @@ async function btnPressed(btn, btn_info, doc_name){
     });
   } 
   getInfo(); 
+  btn_text.classList.remove("spinner-border", "spinner-border-sm");
 }
 
 async function resetFirestore(){
@@ -138,22 +149,28 @@ function setDateText(){
 }
 
 async function getInfo(){
+  refresh_btn.classList.add("disabled");
+  refresh_text.innerHTML = "";
+  refresh_text.classList.add("spinner-border", "spinner-border-sm");
+
   let mor_info = (await getDoc(doc(db, "Bart Info", "Morning"))).data();
   let aft_info = (await getDoc(doc(db, "Bart Info", "Afternoon"))).data();
 
   // morning button
   if (mor_info && mor_info.fed){
-    changeFed(mor_btn);
+    changeFed(mor_btn, mor_text);
   } else{
-    changeNotFed(mor_btn);
+    changeNotFed(mor_btn, mor_text);
   }
 
   // afternoon button
   if (aft_info && aft_info.fed){
-    changeFed(aft_btn);
+    changeFed(aft_btn, aft_text);
   } else{
-    changeNotFed(aft_btn);
+    changeNotFed(aft_btn, aft_text);
   }
 
-
+  refresh_btn.classList.remove("disabled");
+  refresh_text.innerHTML = "Refresh Info";
+  refresh_text.classList.remove("spinner-border", "spinner-border-sm");
 }
