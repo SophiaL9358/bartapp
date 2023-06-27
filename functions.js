@@ -78,15 +78,23 @@ async function aftBtnPressed(){
   btnPressed(aft_btn, aft_info, "Afternoon");
 }
 
+async function isUnsynched(){
+  let mor_info = (await getDoc(doc(db, "Bart Info", "Morning"))).data();
+  let aft_info = (await getDoc(doc(db, "Bart Info", "Afternoon"))).data();
+
+  return (mor_btn.innerHTML == not_fed_info && mor_info.fed) ||(mor_btn.innerHTML == fed_info && !mor_info.fed) || (aft_btn.innerHTML == not_fed_info && aft_info.fed) ||(aft_btn.innerHTML == fed_info && !aft_info.fed);
+}
+
 // General button press
 async function btnPressed(btn, btn_info, doc_name){
+  
   // check if date has changed
   setDateText();
   let date_info = (await getDoc(doc(db, "Bart Info", "General"))).data();
   if (date_text.innerHTML != date_info.date){
     alert("Day has changed! Resetting...");
     resetFirestore();
-  } else if (btn.innerHTML == not_fed_info && btn_info.fed ||btn.innerHTML == fed_info && !btn_info.fed){
+  } else if (await isUnsynched()){
     // If someone changed status while on the site
     alert("A change was already made to Bart's feeding status while you were on the site. Showing changes...");
   } else {
