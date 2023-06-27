@@ -9,12 +9,24 @@
     <body class = "d-flex justify-content-center align-items-center py-5" style = "flex-direction:column;">            
             <h1 class = "display-4 mt-1">Bart Feeding Status</h1>
             <br>
-            <p style = "font-size: 1.3em;" id = "date">Loading...</p>
-            <button id = "refresh_btn" class = "btn btn-outline-secondary d-flex justify-content-center">
-                <span id = "refresh_text">
-                    Refresh Info
-                </span>
-            </button>
+            <div class = "row container border p-3">
+                <div class = "col-sm d-flex justify-content-center border align-items-center">
+                    <button id = "refresh_btn" class = "btn btn-outline-primary d-flex justify-content-center">
+                        <span id = "refresh_text">
+                            Refresh Info
+                        </span>
+                    </button>
+                    
+                </div>
+                <div class = "col-sm d-flex justify-content-center border align-items-center pt-3">
+                    <p style = "font-size: 1.3em;" id = "date">Loading...</p>
+                </div>
+                <div class = "col-sm d-flex justify-content-center border align-items-center">
+                    <b>Name:</b> <i class = "ms-2" id = "user_name"> User</i>
+                </div>
+            </div>
+            
+            
             <!-- Morning -->
             <br>
             <div class = "container border border-2" style = "width: 80%; max-width: 800px;">

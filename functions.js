@@ -42,36 +42,36 @@ let aft_text = document.getElementById("aft_text");
 
 let date_text = document.getElementById("date");
 
-refresh_btn.addEventListener("click", getInfo);
+refresh_btn.addEventListener("click", async () => {
+  getInfo();
+  setDateText();
+  let date_info = (await getDoc(doc(db, "Bart Info", "General"))).data();
+  if (date_text.innerHTML != date_info.date){
+    resetFirestore();
+  }
+});
 mor_btn.addEventListener("click", morBtnPressed);
 aft_btn.addEventListener("click", aftBtnPressed);
 
-// When user enters, run:
-getInfo();
-// Check if day changed:
-setDateText();
-let date_info = (await getDoc(doc(db, "Bart Info", "General"))).data();
-if (date_text.innerHTML != date_info.date){
-  resetFirestore();
-}
-  
 
 /* FUNCTIONS */
 // Set button to not fed
-function changeNotFed(btn, btn_text){
+const changeNotFed = (btn, btn_text) => {
   btn_text.innerHTML = not_fed_info;
   btn.classList.remove("btn-success");
   btn.classList.add("btn-danger");
 }
-function changeFed(btn, btn_text){
+
+const changeFed = (btn, btn_text) => {
   btn_text.innerHTML = fed_info;
   btn.classList.remove("btn-danger");
   btn.classList.add("btn-success");
 }
 
-// Debug
-function debug(){
-  console.log("hello sir");
+const setDateText = () => {
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const date_now = new Date();
+  date_text.innerHTML = months[date_now.getMonth()] + " " + date_now.getDate() + ", " + date_now.getFullYear();
 }
 
 // Morning button
@@ -124,9 +124,7 @@ async function resetFirestore(){
 
   setDateText();
   if (date_text.innerHTML == date_info.date){ // the user's date was behind
-    console.log("do nothing");
     return; // do nothing
-
   } else { // firestore date is wrong (so everything needs to be reset)
     await updateDoc(doc(db, "Bart Info", "Morning"), {
       fed: false
@@ -140,12 +138,6 @@ async function resetFirestore(){
     getInfo();
   }
   
-}
-
-function setDateText(){
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const date_now = new Date();
-  date_text.innerHTML = months[date_now.getMonth()] + " " + date_now.getDate() + ", " + date_now.getFullYear();
 }
 
 async function getInfo(){
@@ -173,4 +165,17 @@ async function getInfo(){
   refresh_btn.classList.remove("disabled");
   refresh_text.innerHTML = "Refresh Info";
   refresh_text.classList.remove("spinner-border", "spinner-border-sm");
+}
+
+
+
+
+/* RUN WHEN INIT */
+// When user enters, run:
+getInfo();
+// Check if day changed:
+setDateText();
+let date_info = (await getDoc(doc(db, "Bart Info", "General"))).data();
+if (date_text.innerHTML != date_info.date){
+  resetFirestore();
 }
