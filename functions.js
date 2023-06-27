@@ -28,8 +28,8 @@ Bart Info > General > date: month day, year
 */
 
 /* CONSTANTS */
-let not_fed_info = "He is not fed :(";
-let fed_info = "He is fed!!!";
+const not_fed_info = "He is not fed :(";
+const fed_info = "He is fed!!!";
 
 let refresh_btn = document.getElementById("refresh_btn");
 let refresh_text = document.getElementById("refresh_text");
@@ -75,8 +75,12 @@ const changeNotFed = (btn, btn_text) => {
   btn.classList.add("btn-danger");
 }
 
-const changeFed = (btn, btn_text) => {
-  btn_text.innerHTML = fed_info;
+const changeFed = (btn, btn_text, who) => {
+  if (who == ""){
+    btn_text.innerHTML = fed_info;
+  } else {
+    btn_text.innerHTML = fed_info + " (by " + who+")";
+  }
   btn.classList.remove("btn-danger");
   btn.classList.add("btn-success");
 }
@@ -124,7 +128,8 @@ async function btnPressed(btn, btn_info, btn_text, doc_name){
   } else {
     // Changing firestore
     await updateDoc(doc(db, "Bart Info", doc_name), {
-      fed: !btn_info.fed
+      fed: !btn_info.fed,
+      who: localStorage.getItem(localStorage_key)
     });
   } 
   getInfo(); 
@@ -171,14 +176,14 @@ async function getInfo(){
 
   // morning button
   if (mor_info && mor_info.fed){
-    changeFed(mor_btn, mor_text);
+    changeFed(mor_btn, mor_text, mor_info.who);
   } else{
     changeNotFed(mor_btn, mor_text);
   }
 
   // afternoon button
   if (aft_info && aft_info.fed){
-    changeFed(aft_btn, aft_text);
+    changeFed(aft_btn, aft_text, aft_info.who);
   } else{
     changeNotFed(aft_btn, aft_text);
   }
