@@ -37,6 +37,25 @@ Bart Info > General > date: month day, year
                       wet_food_can: 1/2
 
 */
+/* DARK MODE */
+
+const dark_mode_switch = document.getElementById('darkModeSwitch');
+const body = document.getElementById('main_body');
+const handleDarkModeSwitch = () => {
+  if (dark_mode_switch.checked){
+    localStorage.setItem('darkMode', 'true')
+  } else {
+    localStorage.setItem('darkMode', 'false')
+  }
+  if (localStorage.getItem('darkMode') == 'true'){
+    body.classList.add('text-bg-dark');
+  } else {
+    body.classList.remove('text-bg-dark');
+  }
+  
+}
+
+window.handleDarkModeSwitch = handleDarkModeSwitch;
 
 /* CONSTANTS */
 const not_fed_info = "He is not fed :(";
@@ -224,6 +243,11 @@ async function getInfo(){
 
 
 /* RUN WHEN INIT */
+// dark mode
+if (localStorage.getItem('darkMode') == 'true'){
+  dark_mode_switch.checked = true;
+}
+handleDarkModeSwitch();
 // Check if day changed:
 setDateText();
 let date_info = (await getDoc(doc(db, "Bart Info", "General"))).data();

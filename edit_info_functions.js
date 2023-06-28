@@ -29,6 +29,15 @@ const db = getFirestore(app);
 - on submit
 */
 
+// dark mode
+if (localStorage.getItem('darkMode') == 'true'){
+    document.getElementById('main_body').classList.add('text-bg-dark');
+} else {
+    document.getElementById('main_body').classList.remove('text-bg-dark');
+}
+
+// FUNCTIONS
+
 const getFirestoreValues = async () => {
     // set "General Information" values
     let general_info = (await getDoc(doc(db, "Bart Info", "General"))).data();
@@ -81,9 +90,9 @@ let submitForm = async () => {
     // update general info
     // get given cal
     let calc_given_cal = Number(dry_food_cal_value)/16*(Number(mor_dry_value)+Number(aft_dry_value)); // dry food
-    console.log(calc_given_cal);
+    // console.log(calc_given_cal);
     calc_given_cal += Number(wet_food_cal_value)*(Number(mor_wet_value)+Number(aft_wet_value)); // wet food
-    console.log(wet_food_cal_value, Number(mor_wet_value)+Number(aft_wet_value), calc_given_cal)
+    // console.log(wet_food_cal_value, Number(mor_wet_value)+Number(aft_wet_value), calc_given_cal)
     // rer = resting energy requirements
     let rer = {6:149, 7:167, 8:184, 9:200, 10:218, 11:234, 12:250, 13:265, 14:280, 15:295, 16:310, 17:324, 18:339, 19:353, 20:366, 25:433};
     await updateDoc(doc(db, "Bart Info", "General"), {
@@ -101,5 +110,7 @@ let submitForm = async () => {
 };
 
 window.submitForm = submitForm;
+
+
 
 getFirestoreValues();
