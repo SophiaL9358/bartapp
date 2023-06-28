@@ -10,6 +10,8 @@
     <body class = "d-flex justify-content-center align-items-center py-5" style = "flex-direction:column;">            
             <h1 class = "display-4 mt-1">Bart Feeding Status</h1>
             <br>
+
+            <!-- General Info: Refresh button, date, name -->
             <div class = "row container-sm border p-3 border-2" style = "width: 80%; max-width: 800px;">
                 <div class = "col-sm d-flex justify-content-center border border-1 align-items-center p-3">
                     <button id = "refresh_btn" class = "btn btn-outline-primary d-flex justify-content-center">
@@ -27,8 +29,7 @@
                     <button id = "edit_name_btn" class = "ms-3 btn btn-outline-primary">Edit</button>
                 </div>
             </div>
-            
-            
+
             <!-- Morning -->
             <br>
             <div class = "container border border-2" style = "width: 80%; max-width: 800px;">
@@ -41,8 +42,8 @@
                         <div><b>Time:</b> 7am - 8am</div>
                         <div><b>Amount:</b> 
                             <ul>
-                                <li>2 Tablespoons Dry Food</li>
-                                <li>Half Can Wet Food</li>
+                                <li><span id = "mor_dry_food_tbsp">...</span> Tablespoons Dry Food</li>
+                                <li><span id = "mor_wet_food_tbsp">...</span> Can Wet Food</li>
                             </ul>
                         </div>
                     </div>
@@ -67,8 +68,8 @@
                         <div><b>Time:</b> 7pm - 8pm</div>
                         <div><b>Amount:</b> 
                             <ul>
-                                <li>2 Tablespoons Dry Food</li>
-                                <li>Half Can Wet Food</li>
+                                <li><span id = "aft_dry_food_tbsp">...</span> Tablespoons Dry Food</li>
+                                <li><span id = "aft_wet_food_tbsp">...</span> Can Wet Food</li>
                             </ul>
                         </div>
                     </div>
@@ -80,6 +81,20 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Bart weight, recommended cal count, actual cal count -->
+            <div class = "row container-sm border p-3 border-2 mt-4" style = "width: 80%; max-width: 800px;">
+                <div class = "col-sm d-flex justify-content-center border border-1 align-items-center p-3">
+                    <b>Weight: </b> <span id = "weight_lb" class = "mx-2">...</span> lb
+                </div>
+                <div class = "col-sm d-flex justify-content-center border border-1 align-items-center p-3">
+                    <b>Rec cal: </b> <span id = "rec_cal" class = "mx-2">...</span> kcal
+                </div>
+                <div class = "col-sm d-flex justify-content-center border border-1 align-items-center p-3">
+                    <b>Given cal: </b> <span id = "given_cal" class = "mx-2">...</span> kcal
+                </div>
+            </div>
+
             <br><br>
             <a href = "edit_info.html"><button class = "btn btn-outline-dark">
                 Edit Information

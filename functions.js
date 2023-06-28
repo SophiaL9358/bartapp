@@ -22,8 +22,19 @@ const db = getFirestore(app);
 
 /* STRUCTURE:
 Bart Info > General > date: month day, year
+                      dry_food_cal: 388
+                      wet_food_cal: 94
+                      weight_lb: 11
+                      rec_cal: 234
+                      given_cal: *calculate*
           > Morning > fed: true/false
+                      who: me!
+                      dry_food_tbsp: 2
+                      wet_food_can: 1/2
           > Afternoon > fed: true/false
+                      who: meeeeeee
+                      dry_food_tbsp: 2
+                      wet_food_can: 1/2
 
 */
 
@@ -188,6 +199,20 @@ async function getInfo(){
     changeNotFed(aft_btn, aft_text);
   }
 
+  // morning amount
+  document.getElementById("mor_dry_food_tbsp").innerHTML = mor_info.dry_food_tbsp;
+  document.getElementById("mor_wet_food_tbsp").innerHTML = mor_info.wet_food_can;
+
+  // afternoon amount
+  document.getElementById("aft_dry_food_tbsp").innerHTML = aft_info.dry_food_tbsp;
+  document.getElementById("aft_wet_food_tbsp").innerHTML = aft_info.wet_food_can;
+
+  // bart info (weight, rec cal, given cal)
+  let general_info = (await getDoc(doc(db, "Bart Info", "General"))).data();
+
+  document.getElementById("weight_lb").innerHTML = general_info.weight_lb;
+  document.getElementById("rec_cal").innerHTML = general_info.rec_cal;
+  document.getElementById("given_cal").innerHTML = general_info.given_cal;
 
   // UNSPIN THE BUTTON
   refresh_btn.classList.remove("disabled");
