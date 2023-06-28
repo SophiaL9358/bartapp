@@ -11,7 +11,7 @@
             <h1 class = "display-4 mt-1">Bart Feeding Status</h1>
             <br>
             <div class = "row container-sm border p-3 border-2" style = "width: 80%; max-width: 800px;">
-                <div class = "col-sm d-flex justify-content-center border border-1 align-items-center">
+                <div class = "col-sm d-flex justify-content-center border border-1 align-items-center p-3">
                     <button id = "refresh_btn" class = "btn btn-outline-primary d-flex justify-content-center">
                         <span id = "refresh_text">
                             Refresh Info
@@ -22,7 +22,7 @@
                 <div class = "col-sm d-flex justify-content-center border border-1 align-items-center pt-3">
                     <p style = "font-size: 1.3em;" id = "date">Loading...</p>
                 </div>
-                <div class = "col-sm d-flex justify-content-center border border-1 align-items-center" style = "font-size: 1.2em;">
+                <div class = "col-sm d-flex justify-content-center border border-1 align-items-center p-3" style = "font-size: 1.2em;">
                     <b>Name:</b> <i class = "ms-2" id = "user_name">...</i> 
                     <button id = "edit_name_btn" class = "ms-3 btn btn-outline-primary">Edit</button>
                 </div>
@@ -80,6 +80,11 @@
                     </button>
                 </div>
             </div>
+            <br><br>
+            <a href = "edit_info.html"><button class = "btn btn-outline-dark">
+                Edit Information
+            </button></a>
+            
     </body>
 </html>
 <script type = "module" src="functions.js"></script>
